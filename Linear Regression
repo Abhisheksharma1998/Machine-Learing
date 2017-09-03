@@ -1,0 +1,59 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Jul 20 19:53:23 2017
+
+@author: Abhishek
+"""
+
+import matplotlib.pyplot as mp
+import numpy as np
+import pandas as pd
+
+def lnr_reg(X,Y,num):
+    #calculating the mean of input as well as output data
+    m_x=np.mean(X)
+    m_y=np.mean(Y)
+    print "Mean of input variable X:",m_x
+    print "Mean of output variable Y:",m_y
+
+    #calculating the deviation
+    d_xy=np.sum((X-m_x)*(Y-m_y))
+    d_xx=np.sum((X-m_x)**2)
+    
+    #calculating the reg. coefficients
+    c1=d_xy/d_xx
+    c2=m_y-c1*m_x
+    y_p=c1*X + c2
+    print "Estimated coeffients :",c1,c2
+    
+    SST = np.sum((Y-m_y)**2)
+    SSE = np.sum((Y-y_p)**2)
+    SSR = SST-SSE
+    Rsquare = (SSR/SST)*100
+    print"SST= ",SST
+    print"SSR= ",SSR
+    print"SSE= ",SSE
+    print"Rsquare= ",Rsquare
+    
+    #plotting the graph
+    mp.scatter(X,Y)
+    mp.plot(X,y_p)
+    mp.show()
+    
+    
+def main():
+    #reading the file
+    df=pd.read_csv("Salary_Data.csv")
+    x=np.array(df['YearsExperience'].tolist())
+    y=np.array(df['Salary'].tolist())
+
+    #calculating the total no of observations
+    num=np.size(x)
+    print "Total no of observations:",num
+    
+    #calling the mean function
+    lnr_reg(x,y,num)
+        
+if __name__ == "__main__":
+    main()
+    
